@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-55PRQZF3');</script>
+    
+    <title>حاسبة القروض والتمويل الذكية</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="استخدم حاسبة القروض والتمويل الذكية لحساب القسط الشهري، إجمالي الفوائد، وجدول السداد. قارن بدقة بين نظام التمويل الإسلامي (المرابحة) والنظام التقليدي.">
+    <meta name="keywords" content="حاسبة القروض, حاسبة التمويل, القسط الشهري, المرابحة الإسلامية, الفائدة المتناقصة, جدول سداد القرض">
+    <meta name="author" content="Nour Eddin Alsawalmeh">
+    <meta name="robots" content="index, follow">
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#2c3e50">
+    <link rel="icon" type="image/png" href="favicon.png">
+
+    <meta property="og:title" content="حاسبة القروض والتمويل الذكية">
+    <meta property="og:description" content="أداة سريعة ومجانية لمحاكاة قروضك وتمويلك ومقارنة الجداول الزمنية للسداد. جربها الآن.">
+    <meta property="og:type" content="website">
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-HYLW3T6M72"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-HYLW3T6M72');
+    </script>
+
+    <!-- FontAwesome & Google Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* المتغيرات الأساسية (الوضع النهاري) - مطابقة لمشروع التقاعد */
+        :root { 
+            --bg-main: #f4f7f6; 
+            --calc-bg: #fff; 
+            --text-main: #333;
+            --text-muted: #7f8c8d;
+            --border-col: #bdc3c7;
+            --title-color: #2c3e50;
+            --input-bg: #fff;
+            --btn-bg: #2c3e50;
+            --btn-hover: #34495e;
+            --law-col-bg: #f9f9f9;
+            --info-header-bg: #ecf0f1;
+            --success-bg: #d4efdf;
+            --success-border: #27ae60;
+            --success-text: #1e8449;
+            --lumpsum-bg: #fef9e7;
+            --lumpsum-border: #f1c40f;
+            --lumpsum-text: #d35400;
+        }
+
+        /* المتغيرات (الوضع الليلي) */
+        body.dark-mode {
+            --bg-main: #121212;
+            --calc-bg: #1e1e1e;
+            --text-main: #e0e0e0;
+            --text-muted: #bdc3c7;
+            --border-col: #444;
+            --title-color: #f1f1f1;
+            --input-bg: #2c2c2c;
+            --btn-bg: #3498db;
+            --btn-hover: #2980b9;
+            --law-col-bg: #2a2a2a;
+            --info-header-bg: #2a2a2a;
+            --success-bg: #1a3c28;
+            --success-border: #27ae60;
+            --success-text: #2ecc71;
+            --lumpsum-bg: #332a10;
+            --lumpsum-border: #f39c12;
+            --lumpsum-text: #f39c12;
+        }
+
+        body {
+            font-family: 'Cairo', 'Segoe UI', Tahoma, sans-serif;
+            background-color: var(--bg-main); color: var(--text-main); 
+            margin: 0; padding: 20px; min-height: 100vh;
+            display: flex; flex-direction: column; align-items: center;
+            -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        .calculator-section {
+            background-color: var(--calc-bg); padding: 35px; border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08); width: 100%; max-width: 850px;
+            box-sizing: border-box; transition: background-color 0.4s ease;
+        }
+
+        h2 { color: var(--title-color); text-align: center; margin-bottom: 25px; line-height: 1.4; font-size: 24px; transition: color 0.4s ease; }
+        
+        .form-row { display: flex; gap: 20px; margin-bottom: 18px; flex-wrap: wrap; }
+        .form-group { flex: 1; min-width: 220px; }
+        label { display: block; margin-bottom: 8px; font-weight: bold; color: var(--title-color); font-size: 15px; }
+        
+        input[type="number"], select { 
+            width: 100%; padding: 12px; border: 1px solid var(--border-col); 
+            border-radius: 5px; box-sizing: border-box; font-size: 16px; 
+            font-family: inherit; background-color: var(--input-bg); color: var(--text-main); 
+            transition: all 0.3s ease; 
+        }
+        input[type="number"]:focus, select:focus { border-color: #3498db; outline: none; box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2); }
+
+        .calc-btn, .print-btn { 
+            width: 100%; padding: 15px; background-color: var(--btn-bg); color: white; 
+            border: none; border-radius: 5px; font-size: 18px; font-weight: bold; 
+            cursor: pointer; margin-top: 15px; transition: all 0.3s ease; 
+        }
+        .calc-btn:hover { background-color: var(--btn-hover); }
+        .calc-btn:active { transform: scale(0.98); }
+        
+        .print-btn { background-color: #27ae60; margin-top: 20px; font-size: 16px; }
+        .print-btn:hover { background-color: #1e8449; }
+
+        .result-section { margin-top: 30px; display: none; }
+        .info-header { background-color: var(--info-header-bg); padding: 15px; border-radius: 5px; margin-bottom: 25px; border-right: 5px solid #3498db; font-size: 16px; }
+        
+        .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-bottom: 25px; }
+        .summary-card { background-color: var(--law-col-bg); padding: 20px; border-radius: 8px; border: 1px solid var(--border-col); text-align: center; }
+        .summary-card p { margin: 0; color: var(--text-muted); font-size: 14px; margin-bottom: 5px; }
+        .summary-card h4 { margin: 0; color: var(--title-color); font-size: 22px; }
+
+        /* تنسيقات الجداول لتلائم المظهر */
+        .table-container { overflow-x: auto; margin-top: 20px; border: 1px solid var(--border-col); border-radius: 8px; }
+        table { width: 100%; border-collapse: collapse; text-align: right; }
+        th, td { padding: 12px 15px; border-bottom: 1px solid var(--border-col); color: var(--text-main); font-size: 14px; }
+        th { background-color: var(--info-header-bg); color: var(--title-color); font-weight: bold; }
+        tr:hover { background-color: var(--law-col-bg); }
+        .table-scroll { max-height: 400px; overflow-y: auto; }
+        .table-scroll th { position: sticky; top: 0; z-index: 10; }
+
+        .copyright-footer { margin-top: 30px; margin-bottom: 20px; text-align: center; font-size: 14px; color: var(--text-muted); font-weight: bold; width: 100%; max-width: 850px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+        .copyright-footer p { margin: 0; }
+        .social-links { display: flex; gap: 18px; margin-top: 5px; }
+        .social-links a { color: var(--text-muted); font-size: 24px; transition: transform 0.2s ease; }
+        .social-links a:hover { color: var(--title-color); transform: translateY(-3px); }
+
+        .floating-action-menu { position: fixed; bottom: 25px; left: 25px; display: flex; flex-direction: column; gap: 15px; z-index: 1000; }
+        .floating-btn { width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 26px; color: white; border: none; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.3); transition: transform 0.3s ease; text-decoration: none; }
+        .floating-btn:hover { transform: scale(1.1); }
+        .floating-btn i { pointer-events: none; }
+        .dark-mode-float { background-color: #2c3e50; }
+        body.dark-mode .dark-mode-float { background-color: #f1c40f; color: #333; }
+        .install-float { background-color: #3498db; }
+        .wa-float { background-color: #25d366; }
+
+        @media print {
+            body { background-color: #fff !important; color: #000 !important; padding: 0; }
+            .calculator-section { box-shadow: none; padding: 0; }
+            .form-row, .calc-btn, .print-btn, .floating-action-menu, .copyright-footer { display: none !important; }
+            .result-section { display: block !important; }
+            .table-scroll { max-height: none; overflow: visible; }
+            th, td { border-color: #ccc; }
+        }
+    </style>
+</head>
+<body>
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-55PRQZF3" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    
+    <main class="calculator-section">
+        <h2>حاسبة القروض والتمويل الذكية<br><span style="font-size: 16px; color: var(--text-muted); font-weight: normal;">(مقارنة المرابحة والفائدة المتناقصة)</span></h2>
+        
+        <form id="loanForm">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>نظام التمويل:</label>
+                    <select id="loanType">
+                        <option value="islamic">إسلامي (مرابحة)</option>
+                        <option value="traditional">تقليدي (فائدة متناقصة)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>طريقة الحساب:</label>
+                    <select id="calcMode">
+                        <option value="amount">أعرف المبلغ الكلي</option>
+                        <option value="installment">أعرف القسط المأمول</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label id="valueLabel">المبلغ الكلي المطلوب:</label>
+                    <input type="number" id="inputValue" required min="1" placeholder="مثال: 10000">
+                </div>
+                <div class="form-group">
+                    <label>مدة التمويل (بالسنوات):</label>
+                    <input type="number" id="years" required min="1" max="40" step="1" placeholder="مثال: 5">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label id="rateLabel">نسبة المرابحة السنوية (%):</label>
+                    <input type="number" id="rate" required min="0" step="0.01" placeholder="مثال: 4.5">
+                </div>
+            </div>
+            
+            <button type="submit" class="calc-btn">استخراج جدول السداد</button>
+        </form>
+
+        <div class="result-section" id="resultBox">
+            <div class="info-header">
+                <p>تفاصيل المعطيات: <strong id="resSummary"></strong></p>
+            </div>
+            
+            <div class="summary-grid">
+                <div class="summary-card" style="border-right: 4px solid #3498db;">
+                    <p>أصل التمويل</p>
+                    <h4 id="resPrincipal">0.00</h4>
+                </div>
+                <div class="summary-card" style="border-right: 4px solid #2ecc71;">
+                    <p>القسط الشهري</p>
+                    <h4 id="resMonthly" style="color: #27ae60;">0.00</h4>
+                </div>
+                <div class="summary-card" style="border-right: 4px solid #f1c40f;">
+                    <p id="profitLabel">إجمالي الأرباح</p>
+                    <h4 id="resProfit" style="color: #f39c12;">0.00</h4>
+                </div>
+                <div class="summary-card" style="border-right: 4px solid #9b59b6;">
+                    <p>الإجمالي للسداد</p>
+                    <h4 id="resTotal">0.00</h4>
+                </div>
+            </div>
+            
+            <h3 style="color: var(--title-color); font-size: 18px; margin-top: 25px; border-bottom: 2px solid var(--border-col); padding-bottom: 10px;">جدول السداد السنوي</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr><th>السنة</th><th>المسدد من الأصل</th><th id="thYearProfit">المسدد من الأرباح</th><th>الرصيد المتبقي</th></tr>
+                    </thead>
+                    <tbody id="yearlyTableBody"></tbody>
+                </table>
+            </div>
+
+            <h3 style="color: var(--title-color); font-size: 18px; margin-top: 25px; border-bottom: 2px solid var(--border-col); padding-bottom: 10px;">التفاصيل الشهرية</h3>
+            <div class="table-container table-scroll">
+                <table>
+                    <thead>
+                        <tr><th>الشهر</th><th>المسدد من الأصل</th><th id="thMonthProfit">المسدد من الأرباح</th><th>الرصيد المتبقي</th></tr>
+                    </thead>
+                    <tbody id="monthlyTableBody"></tbody>
+                </table>
+            </div>
+            
+            <button class="print-btn" onclick="window.print()"><i class="fa-solid fa-print"></i> طباعة التقرير بصيغة PDF</button>
+        </div>
+    </main>
+
+    <div class="copyright-footer">
+        <p>&copy; 2026 جميع الحقوق محفوظة - تم التطوير والبرمجة بواسطة نورالدين السوالمه</p>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 8px; direction: ltr;">Version: <span style="font-weight: bold;">v1.0.0</span></p>
+        <div class="social-links">
+            <a href="https://www.linkedin.com/in/nour-eddin-alsawalmeh-91801255/" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
+            <a href="https://github.com/NourEnzi" target="_blank"><i class="fa-brands fa-github"></i></a>
+            <a href="mailto:NOUR.AL3NEZI@HOTMAIL.COM"><i class="fa-solid fa-envelope"></i></a>
+        </div>
+    </div>
+
+    <div class="floating-action-menu">
+        <button id="darkModeToggle" class="floating-btn dark-mode-float" title="تبديل الوضع الليلي">
+            <i class="fa-solid fa-moon"></i>
+        </button>
+        <button id="installAppBtn" class="floating-btn install-float" title="تنزيل الحاسبة كتطبيق">
+            <i class="fa-solid fa-download"></i>
+        </button>
+        <a id="floating-wa-btn" href="#" class="floating-btn wa-float" target="_blank" title="شارك الحاسبة عبر واتساب">
+            <i class="fa-brands fa-whatsapp"></i>
+        </a>
+    </div>
+
+    <script>
+        // --- 1. ديناميكية الحقول ---
+        document.getElementById("calcMode").addEventListener("change", function() {
+            document.getElementById("valueLabel").innerText = this.value === "amount" ? "المبلغ الكلي المطلوب:" : "القسط الشهري المأمول:";
+            document.getElementById("inputValue").placeholder = this.value === "amount" ? "مثال: 10000" : "مثال: 250";
+        });
+        document.getElementById("loanType").addEventListener("change", function() {
+            let label = this.value === "islamic" ? "نسبة المرابحة السنوية (%):" : "نسبة الفائدة السنوية (%):";
+            document.getElementById("rateLabel").innerText = label;
+        });
+
+        // --- 2. الوضع الليلي ---
+        document.getElementById("darkModeToggle").addEventListener("click", function() {
+            document.body.classList.toggle("dark-mode");
+            let icon = this.querySelector("i");
+            if(document.body.classList.contains("dark-mode")) {
+                icon.classList.replace("fa-moon", "fa-sun");
+            } else {
+                icon.classList.replace("fa-sun", "fa-moon");
+            }
+        });
+
+        // --- 3. محرك الحسابات (Vanilla JS) ---
+        document.getElementById("loanForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+            
+            let calcMode = document.getElementById("calcMode").value;
+            let loanType = document.getElementById("loanType").value;
+            let val = Number(document.getElementById("inputValue").value);
+            let numYears = Number(document.getElementById("years").value);
+            let numRate = Number(document.getElementById("rate").value);
+            
+            let months = Math.round(numYears * 12);
+            let annualRate = numRate / 100;
+            let monthlyRate = annualRate / 12;
+
+            let principal = 0, monthlyPayment = 0, totalPayment = 0, totalProfit = 0;
+
+            if (loanType === 'islamic') {
+                if (calcMode === 'amount') {
+                    principal = val;
+                    totalProfit = principal * annualRate * (months / 12);
+                    totalPayment = principal + totalProfit;
+                    monthlyPayment = totalPayment / months;
+                } else {
+                    monthlyPayment = val;
+                    totalPayment = monthlyPayment * months;
+                    principal = totalPayment / (1 + annualRate * (months / 12));
+                    totalProfit = totalPayment - principal;
+                }
+            } else {
+                if (calcMode === 'amount') {
+                    principal = val;
+                    if (numRate === 0) monthlyPayment = principal / months;
+                    else monthlyPayment = principal * (monthlyRate * Math.pow(1 + monthlyRate, months)) / (Math.pow(1 + monthlyRate, months) - 1);
+                    totalPayment = monthlyPayment * months;
+                    totalProfit = totalPayment - principal;
+                } else {
+                    monthlyPayment = val;
+                    if (numRate === 0) principal = monthlyPayment * months;
+                    else principal = monthlyPayment * ((Math.pow(1 + monthlyRate, months) - 1) / (monthlyRate * Math.pow(1 + monthlyRate, months)));
+                    totalPayment = monthlyPayment * months;
+                    totalProfit = totalPayment - principal;
+                }
+            }
+
+            // تحديث البطاقات والنصوص
+            let typeText = loanType === 'islamic' ? 'إسلامي (مرابحة)' : 'تقليدي (فائدة متناقصة)';
+            let profitText = loanType === 'islamic' ? 'المرابحة' : 'الفوائد';
+            
+            document.getElementById("resSummary").innerText = `${typeText} | ${numYears} سنوات | نسبة ${numRate}%`;
+            document.getElementById("profitLabel").innerText = `إجمالي ${profitText}`;
+            document.getElementById("thYearProfit").innerText = `المسدد من ${profitText}`;
+            document.getElementById("thMonthProfit").innerText = `المسدد من ${profitText}`;
+            
+            document.getElementById("resPrincipal").innerText = principal.toFixed(2);
+            document.getElementById("resMonthly").innerText = monthlyPayment.toFixed(2);
+            document.getElementById("resProfit").innerText = totalProfit.toFixed(2);
+            document.getElementById("resTotal").innerText = totalPayment.toFixed(2);
+
+            // بناء الجداول
+            let currentBalance = principal;
+            let yearlyHTML = "", monthlyHTML = "";
+            let yearlyPrincipalPaid = 0, yearlyProfitPaid = 0, currentYear = 1;
+
+            for (let absoluteMonth = 1; absoluteMonth <= months; absoluteMonth++) {
+                let profitPart = 0, principalPart = 0;
+
+                if (loanType === 'islamic') {
+                    profitPart = totalProfit / months;
+                    principalPart = principal / months;
+                } else {
+                    profitPart = currentBalance * monthlyRate;
+                    if (absoluteMonth === months) principalPart = currentBalance;
+                    else principalPart = monthlyPayment - profitPart;
+                }
+
+                yearlyProfitPaid += profitPart;
+                yearlyPrincipalPaid += principalPart;
+                currentBalance -= principalPart;
+                if (currentBalance < 0.01) currentBalance = 0;
+
+                monthlyHTML += `<tr><td>شهر ${absoluteMonth}</td><td>${principalPart.toFixed(2)}</td><td>${profitPart.toFixed(2)}</td><td>${currentBalance.toFixed(2)}</td></tr>`;
+
+                if (absoluteMonth % 12 === 0 || absoluteMonth === months) {
+                    yearlyHTML += `<tr><td>السنة ${currentYear}</td><td>${yearlyPrincipalPaid.toFixed(2)}</td><td>${yearlyProfitPaid.toFixed(2)}</td><td>${currentBalance.toFixed(2)}</td></tr>`;
+                    yearlyPrincipalPaid = 0; yearlyProfitPaid = 0; currentYear++;
+                }
+            }
+
+            document.getElementById("yearlyTableBody").innerHTML = yearlyHTML;
+            document.getElementById("monthlyTableBody").innerHTML = monthlyHTML;
+            document.getElementById("resultBox").style.display = "block";
+            
+            // تحديث رسالة الواتساب
+            let msg = `مرحباً! استخدمت حاسبة القروض والتمويل الذكية 📊.\n\nنظام التمويل: ${typeText}\nالمدة: ${numYears} سنوات بنسبة ${numRate}%\n💰 أصل التمويل: ${principal.toFixed(2)}\n🗓️ القسط الشهري: ${monthlyPayment.toFixed(2)}\n📈 إجمالي ${profitText}: ${totalProfit.toFixed(2)}\n🏦 الإجمالي للسداد: ${totalPayment.toFixed(2)}\n\nجرب الأداة وقارن بين الأنظمة المالية بنفسك من هنا:\nhttps://nourenzi.github.io/loan-calculator/`;
+            document.getElementById("floating-wa-btn").href = `https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`;
+        });
+
+        // --- 4. رابط الواتساب الافتراضي ---
+        document.getElementById("floating-wa-btn").href = `https://api.whatsapp.com/send?text=${encodeURIComponent("جرب حاسبة القروض والتمويل الذكية لمقارنة المرابحة الإسلامية مع الفائدة المتناقصة:\nhttps://nourenzi.github.io/loan-calculator/")}`;
+
+        // --- 5. حماية الكود (Anti-Inspect) ---
+        document.addEventListener('contextmenu', function(e) { e.preventDefault(); });
+        document.onkeydown = function(e) {
+            if(e.keyCode == 123) return false; 
+            if(e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74 || e.keyCode == 67)) return false; 
+            if(e.ctrlKey && e.keyCode == 85) return false; 
+        };
+
+        // --- 6. تثبيت التطبيق PWA ---
+        let deferredPrompt;
+        const installAppBtn = document.getElementById('installAppBtn');
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault(); deferredPrompt = e; 
+        });
+        installAppBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt(); 
+                const { outcome } = await deferredPrompt.userChoice;
+                deferredPrompt = null;
+            } else {
+                alert("📥 لتنزيل الحاسبة كبرنامج:\n\n🍎 لأجهزة آيفون (Safari): اضغط على 'المشاركة' ثم 'إضافة إلى الشاشة الرئيسية'.\n\n🤖 لأجهزة أندرويد (Chrome): اضغط على النقاط الثلاث ثم 'تثبيت التطبيق'.");
+            }
+        });
+        window.addEventListener('appinstalled', () => { installAppBtn.style.display = 'none'; });
+
+        // تسجيل Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js').catch(() => console.log('ملاحظة: تأكد من إضافة ملف sw.js ليعمل التطبيق بدون إنترنت'));
+            });
+        }
+    </script>
+</body>
+</html>
