@@ -27,7 +27,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     
     <style>
-        /* المتغيرات الأساسية (الوضع النهاري) - مطابقة لمشروع التقاعد */
+        /* المتغيرات الأساسية (الوضع النهاري) */
         :root { 
             --bg-main: #f4f7f6; 
             --calc-bg: #fff; 
@@ -110,14 +110,13 @@
         .print-btn:hover { background-color: #1e8449; }
 
         .result-section { margin-top: 30px; display: none; }
-        .info-header { background-color: var(--info-header-bg); padding: 15px; border-radius: 5px; margin-bottom: 25px; border-right: 5px solid #3498db; font-size: 16px; }
+        .info-header { background-color: var(--info-header-bg); padding: 15px; border-radius: 5px; margin-bottom: 25px; border-right: 5px solid #3498db; font-size: 16px; line-height: 1.6; }
         
         .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-bottom: 25px; }
         .summary-card { background-color: var(--law-col-bg); padding: 20px; border-radius: 8px; border: 1px solid var(--border-col); text-align: center; }
         .summary-card p { margin: 0; color: var(--text-muted); font-size: 14px; margin-bottom: 5px; }
         .summary-card h4 { margin: 0; color: var(--title-color); font-size: 22px; }
 
-        /* تنسيقات الجداول لتلائم المظهر */
         .table-container { overflow-x: auto; margin-top: 20px; border: 1px solid var(--border-col); border-radius: 8px; }
         table { width: 100%; border-collapse: collapse; text-align: right; }
         th, td { padding: 12px 15px; border-bottom: 1px solid var(--border-col); color: var(--text-main); font-size: 14px; }
@@ -180,12 +179,16 @@
                     <input type="number" id="inputValue" required min="1" placeholder="مثال: 10000">
                 </div>
                 <div class="form-group">
-                    <label>مدة التمويل (بالسنوات):</label>
-                    <input type="number" id="years" required min="1" max="40" step="1" placeholder="مثال: 5">
+                    <label>الدفعة الأولى (اختياري):</label>
+                    <input type="number" id="downPayment" min="0" placeholder="مثال: 2000 (تخصم من التمويل)">
                 </div>
             </div>
 
             <div class="form-row">
+                <div class="form-group">
+                    <label>مدة التمويل (بالسنوات):</label>
+                    <input type="number" id="years" required min="1" max="40" step="1" placeholder="مثال: 5">
+                </div>
                 <div class="form-group">
                     <label id="rateLabel">نسبة المرابحة السنوية (%):</label>
                     <input type="number" id="rate" required min="0" step="0.01" placeholder="مثال: 4.5">
@@ -202,7 +205,7 @@
             
             <div class="summary-grid">
                 <div class="summary-card" style="border-right: 4px solid #3498db;">
-                    <p>أصل التمويل</p>
+                    <p>أصل التمويل (من البنك)</p>
                     <h4 id="resPrincipal">0.00</h4>
                 </div>
                 <div class="summary-card" style="border-right: 4px solid #2ecc71;">
@@ -214,7 +217,7 @@
                     <h4 id="resProfit" style="color: #f39c12;">0.00</h4>
                 </div>
                 <div class="summary-card" style="border-right: 4px solid #9b59b6;">
-                    <p>الإجمالي للسداد</p>
+                    <p>الإجمالي للسداد للبنك</p>
                     <h4 id="resTotal">0.00</h4>
                 </div>
             </div>
@@ -245,7 +248,7 @@
 
     <div class="copyright-footer">
         <p>&copy; 2026 جميع الحقوق محفوظة - تم التطوير والبرمجة بواسطة نورالدين السوالمه</p>
-        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 8px; direction: ltr;">Version: <span style="font-weight: bold;">v1.0.0</span></p>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 8px; direction: ltr;">Version: <span style="font-weight: bold;">v1.2.0</span></p>
         <div class="social-links">
             <a href="https://www.linkedin.com/in/nour-eddin-alsawalmeh-91801255/" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
             <a href="https://github.com/NourEnzi" target="_blank"><i class="fa-brands fa-github"></i></a>
@@ -294,6 +297,7 @@
             let calcMode = document.getElementById("calcMode").value;
             let loanType = document.getElementById("loanType").value;
             let val = Number(document.getElementById("inputValue").value);
+            let downPayment = Number(document.getElementById("downPayment").value) || 0;
             let numYears = Number(document.getElementById("years").value);
             let numRate = Number(document.getElementById("rate").value);
             
@@ -302,40 +306,58 @@
             let monthlyRate = annualRate / 12;
 
             let principal = 0, monthlyPayment = 0, totalPayment = 0, totalProfit = 0;
+            let purchasingPower = 0; // لحساب القدرة الشرائية الإجمالية في حال وجود دفعة أولى
 
-            if (loanType === 'islamic') {
-                if (calcMode === 'amount') {
-                    principal = val;
+            if (calcMode === 'amount') {
+                principal = val - downPayment;
+                
+                if (principal <= 0) {
+                    alert("عذراً، يجب أن تكون الدفعة الأولى أقل من المبلغ الكلي المطلوب.");
+                    return;
+                }
+                
+                purchasingPower = val;
+
+                if (loanType === 'islamic') {
                     totalProfit = principal * annualRate * (months / 12);
                     totalPayment = principal + totalProfit;
                     monthlyPayment = totalPayment / months;
                 } else {
-                    monthlyPayment = val;
-                    totalPayment = monthlyPayment * months;
-                    principal = totalPayment / (1 + annualRate * (months / 12));
-                    totalProfit = totalPayment - principal;
-                }
-            } else {
-                if (calcMode === 'amount') {
-                    principal = val;
                     if (numRate === 0) monthlyPayment = principal / months;
                     else monthlyPayment = principal * (monthlyRate * Math.pow(1 + monthlyRate, months)) / (Math.pow(1 + monthlyRate, months) - 1);
                     totalPayment = monthlyPayment * months;
                     totalProfit = totalPayment - principal;
+                }
+            } else {
+                monthlyPayment = val;
+                
+                if (loanType === 'islamic') {
+                    totalPayment = monthlyPayment * months;
+                    principal = totalPayment / (1 + annualRate * (months / 12));
+                    totalProfit = totalPayment - principal;
                 } else {
-                    monthlyPayment = val;
                     if (numRate === 0) principal = monthlyPayment * months;
                     else principal = monthlyPayment * ((Math.pow(1 + monthlyRate, months) - 1) / (monthlyRate * Math.pow(1 + monthlyRate, months)));
                     totalPayment = monthlyPayment * months;
                     totalProfit = totalPayment - principal;
                 }
+                
+                purchasingPower = principal + downPayment;
             }
 
             // تحديث البطاقات والنصوص
             let typeText = loanType === 'islamic' ? 'إسلامي (مرابحة)' : 'تقليدي (فائدة متناقصة)';
             let profitText = loanType === 'islamic' ? 'المرابحة' : 'الفوائد';
             
-            document.getElementById("resSummary").innerText = `${typeText} | ${numYears} سنوات | نسبة ${numRate}%`;
+            let summaryHTML = `${typeText} | ${numYears} سنوات | نسبة ${numRate}%`;
+            if (downPayment > 0) {
+                summaryHTML += ` | دفعة أولى: ${downPayment}`;
+                if (calcMode === 'installment') {
+                    summaryHTML += `<br><span style="color:var(--success-text); font-weight:bold; display:block; margin-top:8px;">💡 القدرة الشرائية (أقصى سعر لسلعة يمكنك شراؤها شامل الدفعة): ${purchasingPower.toFixed(2)}</span>`;
+                }
+            }
+
+            document.getElementById("resSummary").innerHTML = summaryHTML;
             document.getElementById("profitLabel").innerText = `إجمالي ${profitText}`;
             document.getElementById("thYearProfit").innerText = `المسدد من ${profitText}`;
             document.getElementById("thMonthProfit").innerText = `المسدد من ${profitText}`;
@@ -380,7 +402,10 @@
             document.getElementById("resultBox").style.display = "block";
             
             // تحديث رسالة الواتساب
-            let msg = `مرحباً! استخدمت حاسبة القروض والتمويل الذكية 📊.\n\nنظام التمويل: ${typeText}\nالمدة: ${numYears} سنوات بنسبة ${numRate}%\n💰 أصل التمويل: ${principal.toFixed(2)}\n🗓️ القسط الشهري: ${monthlyPayment.toFixed(2)}\n📈 إجمالي ${profitText}: ${totalProfit.toFixed(2)}\n🏦 الإجمالي للسداد: ${totalPayment.toFixed(2)}\n\nجرب الأداة وقارن بين الأنظمة المالية بنفسك من هنا:\nhttps://nourenzi.github.io/loan-calculator/`;
+            let msg = `مرحباً! استخدمت حاسبة القروض والتمويل الذكية 📊.\n\nنظام التمويل: ${typeText}\nالمدة: ${numYears} سنوات بنسبة ${numRate}%\n`;
+            if(downPayment > 0) msg += `💵 الدفعة الأولى: ${downPayment.toFixed(2)}\n`;
+            msg += `💰 أصل التمويل (من البنك): ${principal.toFixed(2)}\n🗓️ القسط الشهري: ${monthlyPayment.toFixed(2)}\n📈 إجمالي ${profitText}: ${totalProfit.toFixed(2)}\n🏦 الإجمالي للسداد للبنك: ${totalPayment.toFixed(2)}\n\nجرب الأداة وقارن بين الأنظمة المالية بنفسك من هنا:\nhttps://nourenzi.github.io/loan-calculator/`;
+            
             document.getElementById("floating-wa-btn").href = `https://api.whatsapp.com/send?text=${encodeURIComponent(msg)}`;
         });
 
